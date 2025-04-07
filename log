@@ -1,0 +1,592 @@
+root@FlowVision:/home/vivek/Orch_UT_auto# python3 compare_device_config.py sample.yaml 
+/usr/lib/python3/dist-packages/paramiko/transport.py:237: CryptographyDeprecationWarning: Blowfish has been deprecated
+  "class": algorithms.Blowfish,
+[INFO] Loading configuration from sample.yaml...
+[INFO] Starting network connectivity verification...
+[INFO] Connecting to Spine-01
+[INFO] Loopback IP 10.10.10.0 is within the expected pool 10.10.10.0/24.
+[ERROR] Failed to execute ping command to .
+[ERROR] Failed to execute ping command to .
+[ERROR] Failed to execute ping command to .
+[ERROR] Failed to execute ping command to .
+[ERROR] Failed to execute ping command to .
+[INFO] Connecting to Spine-02
+[ERROR] Failed to connect to Spine-02: [Errno -3] Temporary failure in name resolution
+[INFO] Connecting to Leaf-1
+[ERROR] Failed to connect to Leaf-1: [Errno -3] Temporary failure in name resolution
+[INFO] Connecting to hgx-su00-h00
+[ERROR] Failed to connect to hgx-su00-h00: [Errno -3] Temporary failure in name resolution
+[INFO] Connecting to hgx-su00-h01
+[ERROR] Failed to connect to hgx-su00-h01: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Spine-01:
+[RESULT]   To Spine-01: Error executing ping to 
+[RESULT]   To Spine-02: Error executing ping to 
+[RESULT]   To Leaf-1: Error executing ping to 
+[RESULT]   To hgx-su00-h00: Error executing ping to 
+[RESULT]   To hgx-su00-h01: Error executing ping to 
+[INFO] Ping results from Spine-02:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Leaf-1:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from hgx-su00-h00:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from hgx-su00-h01:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Spine-01:
+[RESULT]   To Spine-01: Error executing ping to 
+[RESULT]   To Spine-02: Error executing ping to 
+[RESULT]   To Leaf-1: Error executing ping to 
+[RESULT]   To hgx-su00-h00: Error executing ping to 
+[RESULT]   To hgx-su00-h01: Error executing ping to 
+[INFO] Ping results from Spine-02:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Leaf-1:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from hgx-su00-h00:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from hgx-su00-h01:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Found 2 devices in category 'Spine'
+[INFO] Starting verification for device: Spine-01 (10.4.5.245)
+Extracted interfaces to check: ['swp1']
+Checking QoS configuration...
+Starting QoS configuration check...
+Output of command 'nv show qos':
+ operational  applied       
+-----------------------  -----------  --------------
+roce                                                
+  enable                              on            
+  mode                   lossless     lossless      
+pfc-watchdog                                        
+  polling-interval                    0:00:00.100000
+  robustness                          3             
+[egress-queue-mapping]                default-global
+[pfc]                                 default-global
+[link-pause]                                        
+[traffic-pool]                        default-lossy 
+[traffic-pool]                        roce-lossless 
+[congestion-control]                  default-global
+[egress-scheduler]                    default-global
+[egress-shaper]                                     
+[mapping]                             default-global
+[remark]                              default-global
+[advance-buffer-config]               default-global
+Output of command 'nv show qos pfc':
+ Profile         Cable Length  Port Buffer  Rx      Tx      XOff Th   XOn Th    Summary           
+--------------  ------------  -----------  ------  ------  --------  --------  ------------------
+default-global  100           344.73 KB    enable  enable  63.48 KB  63.48 KB  switch-priority: 3
+Output of command 'nv show qos pfc-watchdog':
+ operational  applied       
+----------------  -----------  --------------
+polling-interval  0:00:00      0:00:00.100000
+robustness        0            3
+Generating QoS configuration report...
+[INFO] QoS configuration matches expected values.
+[INFO] QoS configuration check completed.
+[RESULT] QoS Check:
+Matched Values:
+enable: on
+mode: lossless
+port-buffer: 344.73 KB
+xoff-threshold: 63.48 KB
+xon-threshold: 63.48 KB
+switch-priority: 3
+polling-interval: 0:00:00.100000
+robustness: 3
+QoS: QoS CONFIG MATCH
+[INFO] Checking BGP ASN configuration...
+Output of command 'vtysh -c 'show ip bgp summary'':
+ IPv4 Unicast Summary (VRF default):
+BGP router identifier 10.10.10.0, local AS number 65101 vrf-id 0
+BGP table version 9
+RIB entries 15, using 3360 bytes of memory
+Peers 4, using 79 KiB of memory
+Peer groups 3, using 192 bytes of memory
+
+Neighbor               V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+leaf-su00-r1(40.0.0.1) 4       2001      1616      1616        0    0    0 01:20:28            8        8 N/A
+leaf-su00-r2(40.0.0.3) 4       2001      1612      1611        0    0    0 01:20:20            8        8 N/A
+leaf-su00-r3(40.0.0.5) 4       2001      1616      1616        0    0    0 01:20:28            8        8 N/A
+leaf-su00-r4(40.0.0.7) 4       2001      1615      1616        0    0    0 01:20:28            8        8 N/A
+
+Total number of neighbors 4
+[INFO] BGP ASN match: 65101
+[RESULT] BGP ASN Check: MATCH (ASN 65101)
+[INFO] Checking BGP neighbors...
+[INFO] Found BGP neighbors:
+  - 40.0.0.1, 40.0.0.3, 40.0.0.5, 40.0.0.7
+[RESULT] BGP Neighbors Check: {'40.0.0.1': '8', '40.0.0.3': '8', '40.0.0.5': '8', '40.0.0.7': '8'}
+[INFO] Checking BFD configuration...
+Output of command 'nv show vrf default router bgp peer-group overlay bfd':
+ operational  applied
+-----------------  -----------  -------
+enable                          on     
+detect-multiplier               3      
+min-rx-interval                 300    
+min-tx-interval                 300
+[INFO] BFD Configuration:
+[INFO]   - Enable: on
+[INFO]   - Detect multiplier: 3
+[INFO]   - Min rx interval: 300
+[INFO]   - Min tx interval: 300
+[RESULT] BFD Check: MATCH (BFD configuration is correct)
+Matched Values: {'enable': 'on', 'detect-multiplier': '3', 'min-rx-interval': '300', 'min-tx-interval': '300'}
+[INFO] Checking BGP path selection and graceful restart...
+Output of command 'nv show vrf default router bgp path-selection':
+ applied  
+-----------------------  ---------
+routerid-compare         off      
+aspath                            
+  compare-lengths        on       
+  compare-confed         off      
+med                               
+  compare-always         off      
+  compare-deterministic  on       
+  compare-confed         off      
+  missing-as-max         off      
+multipath                         
+  aspath-ignore          on       
+  generate-asset         off      
+  bandwidth              all-paths
+[INFO] BGP Path Selection Configuration:
+[INFO]   - Routerid compare: off
+[INFO]   - Aspath compare lengths: on
+[INFO]   - Aspath compare confed: off
+[INFO]   - Med compare always: off
+[INFO]   - Med compare deterministic: on
+[INFO]   - Med compare confed: off
+[INFO]   - Med missing as max: off
+[INFO]   - Multipath aspath ignore: on
+[INFO]   - Multipath generate asset: off
+[INFO]   - Multipath bandwidth: all-paths
+[INFO] BGP path selection configuration matches expected values.
+[INFO] BGP Graceful Restart Configuration:
+[INFO]   - Mode: helper-only
+[INFO]   - Restart time: 1
+[INFO]   - Path selection deferral time: 0
+[INFO]   - Stale routes time: 1
+[INFO] BGP graceful restart configuration matches expected values.
+[RESULT] BGP Path Selection and Graceful Restart Check: MATCH (BGP path selection and graceful restart configurations are correct)
+[INFO] Checking BGP redistribution configuration for spine...
+Output of command 'nv show vrf default router bgp address-family ipv4-unicast redistribute':
+ applied  
+-----------  ---------
+static                
+  enable     on       
+  metric     auto     
+  route-map  none     
+connected             
+  enable     on       
+  metric     auto     
+  route-map  lo-to-bgp
+kernel                
+  enable     off      
+ospf                  
+  enable     off
+[INFO] BGP Redistribution Configuration:
+[INFO]   - Static: {'enable': 'on', 'metric': 'auto', 'route-map': 'none'}
+[INFO]   - Connected: {'enable': 'on', 'metric': 'auto', 'route-map': 'lo-to-bgp'}
+[INFO]   - Kernel: {'enable': 'off'}
+[INFO]   - Ospf: {'enable': 'off'}
+[INFO] BGP redistribution configuration matches expected values.
+[RESULT] BGP Redistribution Check: MATCH (BGP redistribution configuration is correct)
+[INFO] Checking Adaptive Routing configuration...
+Output of command 'nv show interface swp1 router adaptive-routing':
+ applied
+--------------------------  -------
+enable                      on     
+link-utilization-threshold  70
+[INFO] MATCH: Adaptive Routing is enabled on swp1.
+[INFO] Adaptive Routing is correctly configured on interfaces: swp1
+[RESULT] Adaptive Routing Check: MATCH (Adaptive Routing enabled on: swp1)
+[INFO] Checking loopback IP configuration...
+[INFO] Loopback IP 10.10.10.0 is within the expected pool 10.10.10.0/24.
+[RESULT] Loopback IP Check: MATCH (10.10.10.0)
+[INFO] Checking interface IPs...
+[INFO] MATCH: swp1 has IPs in subnet 40.0.0.0/24: 40.0.0.0
+[RESULT] Interface IPs Check: MATCH (swp1: 40.0.0.0)
+Checking interface status...
+Parsing interface status output...
+[INFO] Interface status check completed successfully.
+[RESULT] Interface Status Check:
+swp1: Admin=up, Oper=up
+[INFO] Checking BGP peer groups...
+Output of command 'nv show vrf default router bgp peer-group':
+ RemoteAs - Remote Autonomous System, Afi-Safi - Address family
+                                                              
+Name            RemoteAs  Type      Afi-Safi  MemberCount
+--------------  --------  --------  --------  -----------
+overlay                   external                       
+underlay_leaf             external            4          
+underlay_spine            external
+[INFO] All required BGP peer groups are present: underlay_spine, underlay_leaf
+[RESULT] BGP Peer Groups Check: MATCH (Peer groups: underlay_spine, underlay_leaf)
+[INFO] Completed verification for device: Spine-01 (10.4.5.245)
+
+[INFO] Starting verification for device: Spine-02 (10.4.5.129)
+Extracted interfaces to check: ['swp5']
+Checking QoS configuration...
+Starting QoS configuration check...
+Output of command 'nv show qos':
+ operational  applied       
+-----------------------  -----------  --------------
+roce                                                
+  enable                              on            
+  mode                   lossless     lossless      
+pfc-watchdog                                        
+  polling-interval                    0:00:00.100000
+  robustness                          3             
+[egress-queue-mapping]                default-global
+[pfc]                                 default-global
+[link-pause]                                        
+[traffic-pool]                        default-lossy 
+[traffic-pool]                        roce-lossless 
+[congestion-control]                  default-global
+[egress-scheduler]                    default-global
+[egress-shaper]                                     
+[mapping]                             default-global
+[remark]                              default-global
+[advance-buffer-config]               default-global
+Output of command 'nv show qos pfc':
+ Profile         Cable Length  Port Buffer  Rx      Tx      XOff Th   XOn Th    Summary           
+--------------  ------------  -----------  ------  ------  --------  --------  ------------------
+default-global  100           344.73 KB    enable  enable  63.48 KB  63.48 KB  switch-priority: 3
+Output of command 'nv show qos pfc-watchdog':
+ operational  applied       
+----------------  -----------  --------------
+polling-interval  0:00:00      0:00:00.100000
+robustness        0            3
+Generating QoS configuration report...
+[INFO] QoS configuration matches expected values.
+[INFO] QoS configuration check completed.
+[RESULT] QoS Check:
+Matched Values:
+enable: on
+mode: lossless
+port-buffer: 344.73 KB
+xoff-threshold: 63.48 KB
+xon-threshold: 63.48 KB
+switch-priority: 3
+polling-interval: 0:00:00.100000
+robustness: 3
+QoS: QoS CONFIG MATCH
+[INFO] Checking BGP ASN configuration...
+Output of command 'vtysh -c 'show ip bgp summary'':
+ IPv4 Unicast Summary (VRF default):
+BGP router identifier 10.10.10.1, local AS number 65102 vrf-id 0
+BGP table version 9
+RIB entries 15, using 3360 bytes of memory
+Peers 4, using 79 KiB of memory
+Peer groups 3, using 192 bytes of memory
+
+Neighbor                V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+leaf-su00-r1(40.0.0.9)  4       2001      1629      1629        0    0    0 01:21:08            8        8 N/A
+leaf-su00-r2(40.0.0.11) 4       2001      1626      1625        0    0    0 01:21:01            8        8 N/A
+leaf-su00-r3(40.0.0.13) 4       2001      1629      1629        0    0    0 01:21:08            8        8 N/A
+leaf-su00-r4(40.0.0.15) 4       2001      1629      1629        0    0    0 01:21:08            8        8 N/A
+
+Total number of neighbors 4
+[ERROR] ASN mismatch detected. Expected ASN: 2001, Found ASN: 65102
+[RESULT] BGP ASN Check: ASN mismatch: Expected 2001, found 65102
+[INFO] Checking BGP neighbors...
+[INFO] Found BGP neighbors:
+  - 40.0.0.9, 40.0.0.11, 40.0.0.13, 40.0.0.15
+[RESULT] BGP Neighbors Check: {'40.0.0.9': '8', '40.0.0.11': '8', '40.0.0.13': '8', '40.0.0.15': '8'}
+[INFO] Checking BFD configuration...
+Output of command 'nv show vrf default router bgp peer-group overlay bfd':
+ operational  applied
+-----------------  -----------  -------
+enable                          on     
+detect-multiplier               3      
+min-rx-interval                 300    
+min-tx-interval                 300
+[INFO] BFD Configuration:
+[INFO]   - Enable: on
+[INFO]   - Detect multiplier: 3
+[INFO]   - Min rx interval: 300
+[INFO]   - Min tx interval: 300
+[RESULT] BFD Check: MATCH (BFD configuration is correct)
+Matched Values: {'enable': 'on', 'detect-multiplier': '3', 'min-rx-interval': '300', 'min-tx-interval': '300'}
+[INFO] Checking BGP path selection and graceful restart...
+Output of command 'nv show vrf default router bgp path-selection':
+ applied  
+-----------------------  ---------
+routerid-compare         off      
+aspath                            
+  compare-lengths        on       
+  compare-confed         off      
+med                               
+  compare-always         off      
+  compare-deterministic  on       
+  compare-confed         off      
+  missing-as-max         off      
+multipath                         
+  aspath-ignore          on       
+  generate-asset         off      
+  bandwidth              all-paths
+[INFO] BGP Path Selection Configuration:
+[INFO]   - Routerid compare: off
+[INFO]   - Aspath compare lengths: on
+[INFO]   - Aspath compare confed: off
+[INFO]   - Med compare always: off
+[INFO]   - Med compare deterministic: on
+[INFO]   - Med compare confed: off
+[INFO]   - Med missing as max: off
+[INFO]   - Multipath aspath ignore: on
+[INFO]   - Multipath generate asset: off
+[INFO]   - Multipath bandwidth: all-paths
+[INFO] BGP path selection configuration matches expected values.
+[INFO] BGP Graceful Restart Configuration:
+[INFO]   - Mode: helper-only
+[INFO]   - Restart time: 1
+[INFO]   - Path selection deferral time: 0
+[INFO]   - Stale routes time: 1
+[INFO] BGP graceful restart configuration matches expected values.
+[RESULT] BGP Path Selection and Graceful Restart Check: MATCH (BGP path selection and graceful restart configurations are correct)
+[INFO] Checking BGP redistribution configuration for spine...
+Output of command 'nv show vrf default router bgp address-family ipv4-unicast redistribute':
+ applied  
+-----------  ---------
+static                
+  enable     on       
+  metric     auto     
+  route-map  none     
+connected             
+  enable     on       
+  metric     auto     
+  route-map  lo-to-bgp
+kernel                
+  enable     off      
+ospf                  
+  enable     off
+[INFO] BGP Redistribution Configuration:
+[INFO]   - Static: {'enable': 'on', 'metric': 'auto', 'route-map': 'none'}
+[INFO]   - Connected: {'enable': 'on', 'metric': 'auto', 'route-map': 'lo-to-bgp'}
+[INFO]   - Kernel: {'enable': 'off'}
+[INFO]   - Ospf: {'enable': 'off'}
+[INFO] BGP redistribution configuration matches expected values.
+[RESULT] BGP Redistribution Check: MATCH (BGP redistribution configuration is correct)
+[INFO] Checking Adaptive Routing configuration...
+Output of command 'nv show interface swp5 router adaptive-routing':
+ applied
+--------------------------  -------
+enable                      on     
+link-utilization-threshold  70
+[INFO] MATCH: Adaptive Routing is enabled on swp5.
+[INFO] Adaptive Routing is correctly configured on interfaces: swp5
+[RESULT] Adaptive Routing Check: MATCH (Adaptive Routing enabled on: swp5)
+[INFO] Checking loopback IP configuration...
+[INFO] Loopback IP 10.10.10.1 is within the expected pool 10.10.10.0/24.
+[RESULT] Loopback IP Check: MATCH (10.10.10.1)
+[INFO] Checking interface IPs...
+[INFO] MATCH: swp5 has IPs in subnet 40.0.0.0/24: 40.0.0.8
+[RESULT] Interface IPs Check: MATCH (swp5: 40.0.0.8)
+Checking interface status...
+Parsing interface status output...
+[INFO] Interface status check completed successfully.
+[RESULT] Interface Status Check:
+swp5: Admin=up, Oper=up
+[INFO] Checking BGP peer groups...
+Output of command 'nv show vrf default router bgp peer-group':
+ RemoteAs - Remote Autonomous System, Afi-Safi - Address family
+                                                              
+Name            RemoteAs  Type      Afi-Safi  MemberCount
+--------------  --------  --------  --------  -----------
+overlay                   external                       
+underlay_leaf             external            4          
+underlay_spine            external
+[INFO] All required BGP peer groups are present: underlay_spine, underlay_leaf
+[RESULT] BGP Peer Groups Check: MATCH (Peer groups: underlay_spine, underlay_leaf)
+[INFO] Completed verification for device: Spine-02 (10.4.5.129)
+
+[INFO] Found 1 devices in category 'Leaf'
+[INFO] Starting verification for device: Leaf-1 (10.4.5.210)
+Extracted interfaces to check: ['swp5', 'swp1']
+Checking QoS configuration...
+Starting QoS configuration check...
+Output of command 'nv show qos':
+ operational  applied       
+-----------------------  -----------  --------------
+roce                                                
+  enable                              on            
+  mode                   lossless     lossless      
+pfc-watchdog                                        
+  polling-interval                    0:00:00.100000
+  robustness                          3             
+[egress-queue-mapping]                default-global
+[pfc]                                 default-global
+[link-pause]                                        
+[traffic-pool]                        default-lossy 
+[traffic-pool]                        roce-lossless 
+[congestion-control]                  default-global
+[egress-scheduler]                    default-global
+[egress-shaper]                                     
+[mapping]                             default-global
+[remark]                              default-global
+[advance-buffer-config]               default-global
+Output of command 'nv show qos pfc':
+ Profile         Cable Length  Port Buffer  Rx      Tx      XOff Th   XOn Th    Summary           
+--------------  ------------  -----------  ------  ------  --------  --------  ------------------
+default-global  100           344.73 KB    enable  enable  63.48 KB  63.48 KB  switch-priority: 3
+Output of command 'nv show qos pfc-watchdog':
+ operational  applied       
+----------------  -----------  --------------
+polling-interval  0:00:00      0:00:00.100000
+robustness        0            3
+Generating QoS configuration report...
+[INFO] QoS configuration matches expected values.
+[INFO] QoS configuration check completed.
+[RESULT] QoS Check:
+Matched Values:
+enable: on
+mode: lossless
+port-buffer: 344.73 KB
+xoff-threshold: 63.48 KB
+xon-threshold: 63.48 KB
+switch-priority: 3
+polling-interval: 0:00:00.100000
+robustness: 3
+QoS: QoS CONFIG MATCH
+[INFO] Checking BGP ASN configuration...
+Output of command 'vtysh -c 'show ip bgp summary'':
+ IPv4 Unicast Summary (VRF default):
+BGP router identifier 10.10.10.2, local AS number 2001 vrf-id 0
+BGP table version 10
+RIB entries 15, using 3360 bytes of memory
+Peers 2, using 40 KiB of memory
+Peer groups 3, using 192 bytes of memory
+
+Neighbor          V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+Spine-1(40.0.0.0) 4      65101      1637      1638        0    0    0 01:21:32            8        8 N/A
+Spine-2(40.0.0.8) 4      65102      1637      1638        0    0    0 01:21:32            8        8 N/A
+
+Total number of neighbors 2
+[ERROR] ASN mismatch detected. Expected ASN: 2002, Found ASN: 2001
+[RESULT] BGP ASN Check: ASN mismatch: Expected 2002, found 2001
+[INFO] Checking BGP neighbors...
+[INFO] Found BGP neighbors:
+  - 40.0.0.0, 40.0.0.8
+[RESULT] BGP Neighbors Check: {'40.0.0.0': '8', '40.0.0.8': '8'}
+[INFO] Checking BFD configuration...
+Output of command 'nv show vrf default router bgp peer-group overlay bfd':
+ operational  applied
+-----------------  -----------  -------
+enable                          on     
+detect-multiplier               3      
+min-rx-interval                 300    
+min-tx-interval                 300
+[INFO] BFD Configuration:
+[INFO]   - Enable: on
+[INFO]   - Detect multiplier: 3
+[INFO]   - Min rx interval: 300
+[INFO]   - Min tx interval: 300
+[RESULT] BFD Check: MATCH (BFD configuration is correct)
+Matched Values: {'enable': 'on', 'detect-multiplier': '3', 'min-rx-interval': '300', 'min-tx-interval': '300'}
+[INFO] Checking BGP path selection and graceful restart...
+Output of command 'nv show vrf default router bgp path-selection':
+ applied  
+-----------------------  ---------
+routerid-compare         off      
+aspath                            
+  compare-lengths        on       
+  compare-confed         off      
+med                               
+  compare-always         off      
+  compare-deterministic  on       
+  compare-confed         off      
+  missing-as-max         off      
+multipath                         
+  aspath-ignore          on       
+  generate-asset         off      
+  bandwidth              all-paths
+[INFO] BGP Path Selection Configuration:
+[INFO]   - Routerid compare: off
+[INFO]   - Aspath compare lengths: on
+[INFO]   - Aspath compare confed: off
+[INFO]   - Med compare always: off
+[INFO]   - Med compare deterministic: on
+[INFO]   - Med compare confed: off
+[INFO]   - Med missing as max: off
+[INFO]   - Multipath aspath ignore: on
+[INFO]   - Multipath generate asset: off
+[INFO]   - Multipath bandwidth: all-paths
+[INFO] BGP path selection configuration matches expected values.
+[INFO] BGP Graceful Restart Configuration:
+[INFO]   - Mode: helper-only
+[INFO]   - Restart time: 1
+[INFO]   - Path selection deferral time: 0
+[INFO]   - Stale routes time: 1
+[INFO] BGP graceful restart configuration matches expected values.
+[RESULT] BGP Path Selection and Graceful Restart Check: MATCH (BGP path selection and graceful restart configurations are correct)
+[INFO] Checking BGP redistribution configuration for leaf...
+Output of command 'nv show vrf default router bgp address-family ipv4-unicast redistribute':
+ applied    
+-----------  -----------
+static                  
+  enable     on         
+  metric     auto       
+  route-map  none       
+connected               
+  enable     on         
+  metric     auto       
+  route-map  hgx_subnets
+kernel                  
+  enable     off        
+ospf                    
+  enable     off
+[INFO] BGP Redistribution Configuration:
+[INFO]   - Static: {'enable': 'on', 'metric': 'auto', 'route-map': 'none'}
+[INFO]   - Connected: {'enable': 'on', 'metric': 'auto', 'route-map': 'hgx_subnets'}
+[INFO]   - Kernel: {'enable': 'off'}
+[INFO]   - Ospf: {'enable': 'off'}
+[INFO] BGP redistribution configuration matches expected values.
+[RESULT] BGP Redistribution Check: MATCH (BGP redistribution configuration is correct)
+[INFO] Checking Adaptive Routing configuration...
+Output of command 'nv show interface swp5 router adaptive-routing':
+ applied
+--------------------------  -------
+enable                      on     
+link-utilization-threshold  70
+[INFO] MATCH: Adaptive Routing is enabled on swp5.
+Output of command 'nv show interface swp1 router adaptive-routing':
+ applied
+--------------------------  -------
+enable                      on     
+link-utilization-threshold  70
+[INFO] MATCH: Adaptive Routing is enabled on swp1.
+[INFO] Adaptive Routing is correctly configured on interfaces: swp5, swp1
+[RESULT] Adaptive Routing Check: MATCH (Adaptive Routing enabled on: swp5, swp1)
+[INFO] Checking loopback IP configuration...
+[INFO] Loopback IP 10.10.10.2 is within the expected pool 10.10.10.0/24.
+[RESULT] Loopback IP Check: MATCH (10.10.10.2)
+[INFO] Checking interface IPs...
+[INFO] MATCH: swp1 has IPs in subnet 40.0.0.0/24: 40.0.0.1
+[RESULT] Interface IPs Check: MATCH (swp1: 40.0.0.1)
+Checking interface status...
+Parsing interface status output...
+[INFO] Interface status check completed successfully.
+[RESULT] Interface Status Check:
+swp1: Admin=up, Oper=up
+swp5: Admin=up, Oper=up
+[INFO] Checking BGP peer groups...
+Output of command 'nv show vrf default router bgp peer-group':
+ RemoteAs - Remote Autonomous System, Afi-Safi - Address family
+                                                              
+Name            RemoteAs  Type      Afi-Safi  MemberCount
+--------------  --------  --------  --------  -----------
+overlay                   external                       
+underlay_leaf             external                       
+underlay_spine            external            2
+[INFO] All required BGP peer groups are present: underlay_spine, underlay_leaf
+[RESULT] BGP Peer Groups Check: MATCH (Peer groups: underlay_spine, underlay_leaf)
+[INFO] Completed verification for device: Leaf-1 (10.4.5.210)
+
+[INFO] Found 0 devices in category 'Tor'
+[INFO] Found 2 hosts
+[INFO] Checking host: hgx-su00-h00 (10.4.5.246)
+[ERROR] Failed to connect to 10.4.5.246: [Errno None] Unable to connect to port 22 on 10.4.5.246
+[ERROR] Failed to connect to host: hgx-su00-h00 (10.4.5.246)
+[INFO] Checking host: hgx-su00-h01 (10.4.5.161)
+[ERROR] Failed to connect to 10.4.5.161: [Errno None] Unable to connect to port 22 on 10.4.5.161
+[ERROR] Failed to connect to host: hgx-su00-h01 (10.4.5.161)
+root@FlowVision:/home/vivek/Orch_UT_auto# 

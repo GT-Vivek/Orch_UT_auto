@@ -1,0 +1,130 @@
+Inventory:
+  SSpines: 0
+  Spines: 2
+  Leafs: 1
+  Tors: 0
+  # Hosts: 2
+Connectivity:
+  SSpine: []
+  Spine:
+    - switchId: 1
+      switchName: "Spine-01"
+      ipAddress: "10.4.5.245"
+      ASN: 65101
+      Credentials:
+        user: "cumulus"
+        password: "YourPaSsWoRd1$"
+      mclag: null
+      Links:
+        - link: "S1_swp1 | L1_swp1"
+          staticLink: true
+          properties: null
+    - switchId: 2
+      switchName: "Spine-02"
+      ipAddress: "10.4.5.129"
+      ASN: 2001
+      Credentials:
+        user: "cumulus"
+        password: "YourPaSsWoRd1$"
+      mclag: null
+      Links:
+        - link: "S2_swp5 | L1_swp5"
+          staticLink: true
+          properties: null
+  Leaf:
+    - switchId: 1
+      switchName: "Leaf-1"
+      ipAddress: "10.4.5.210"
+      ASN: 2002
+      Credentials:
+        user: "cumulus"
+        password: "YourPaSsWoRd1$"
+      mclag: null
+      Links:
+        - link: "L1_swp1 | S1_swp1"
+          staticLink: true
+          properties: null
+        - link: "L1_swp5 | S2_swp5"
+          staticLink: true
+          properties: null
+        # - link: "L1_swp3 | G1_esn6"
+        #   staticLink: true
+        #   properties:
+        #     mode: "L3"
+        #     destination: "hgx-su00-h00"
+        # - link: "L1_swp4 | G1_esn7"
+        #   staticLink: true
+        #   properties:
+        #     mode: "L3"
+        #     destination: "hgx-su00-h00"
+        
+        # - link: "L1_swp7 | G2_esn10"
+        #   staticLink: true
+        #   properties:
+        #     mode: "L3"
+        #     destination: "hgx-su00-h01"
+        # - link: "L1_swp8 | G2_esn11"
+        #   staticLink: true
+        #   properties:
+        #     mode: "L3"
+        #     destination: "hgx-su00-h01"
+  Tor: []
+  Host:
+    - hostId: 1
+      hostName: "hgx-su00-h00"
+      ipAddress: "10.4.5.246"
+      Credentials:
+        user: "osboxes"
+        password: "osboxes.org"
+      Links:
+        - link: "G1_ens6 | L1_swp3"
+          staticLink: true
+          properties: null
+        - link: "G1_ens7 | L1_swp4"
+          staticLink: true
+          properties: null
+    - hostId: 2
+      hostName: "hgx-su00-h01"
+      ipAddress: "10.4.5.161"
+      Credentials:
+        user: "osboxes"
+        password: "osboxes.org"
+      Links:
+        - link: "G2_ens10 | L1_swp7"
+          staticLink: true
+          properties: null
+        - link: "G2_ens11 | L1_swp8"
+          staticLink: true
+          properties: null
+BGP:
+  BGP_U: false
+  ND_RA: 30
+PhysicalIfCfg:
+  FEC: "Off"
+  MTU: 2500
+  AdminStatus: "Up"
+ASN:
+  SSpine: "10000-20000"
+  Spine: "21000-50000"
+  Leaf: "51000-60000"
+  Tor: "61000-70000"
+IPv4Pool:
+  Loopback: "10.10.10.0/24"
+  LeafSpine: "40.0.0.0/24"
+  LeafTor: "39.0.0.0/24"
+  Host: "49.0.0.0/24"
+IPv6Pool:
+  LeafSpine: null
+  LeafTor: null
+  Host: null
+NTP:
+  server: "10.4.5.248"
+  timezone: "Asia/Kolkata"
+SYSLOG:
+  server: "10.4.5.248"
+SNMP:
+  trapserver: "10.4.5.248"
+Parameters:
+  vlan: "200-205"
+  anycast_gateway: "100.10.0.0/23"
+  hosts_per_vlan: 10
