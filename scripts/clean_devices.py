@@ -34,7 +34,6 @@ requests.packages.urllib3.disable_warnings()
 def get_revision_id(device):
     url = f"{device['host']}/nvue_v1/revision"
     print(f"Requesting new revision ID from {device['host']}...")
-    print(f"URL: {url}")  # Print the URL being used
     response = requests.post(url, auth=(device['username'], device['password']), verify=False)
     if response.status_code == 200:
         revision_data = response.json()
@@ -48,7 +47,6 @@ def get_revision_id(device):
 def clear_configuration(device, revision_id):
     url = f"{device['host']}/nvue_v1/?rev={revision_id}"
     print(f"Clearing configuration on {device['host']} using revision ID {revision_id}...")
-    print(f"URL: {url}")  # Print the URL being used
     payload = {
         "router": None,
         "interface": {iface: None for iface in INTERFACES_TO_CLEAR},
@@ -66,7 +64,6 @@ def clear_configuration(device, revision_id):
 def apply_configuration(device, revision_id):
     url = f"{device['host']}/nvue_v1/revision/{revision_id}"
     print(f"Applying configuration on {device['host']} using revision ID {revision_id}...")
-    print(f"URL: {url}")  # Print the URL being used
     payload = {"state": "apply", "auto-prompt": {"ays": "ays_yes"}}
     headers = {'Content-Type': 'application/json'}
     print(f"Payload: {json.dumps(payload)}")  # Print the payload being sent

@@ -1,0 +1,197 @@
+root@FlowVision:/home/vivek/Orch_UT_auto/scripts# python3 main.py 
+/usr/lib/python3/dist-packages/paramiko/transport.py:237: CryptographyDeprecationWarning: Blowfish has been deprecated
+  "class": algorithms.Blowfish,
+Starting device cleanup...
+
+Processing device https://10.4.5.106:8765...
+Requesting new revision ID from https://10.4.5.106:8765...
+Received revision ID 445 from https://10.4.5.106:8765.
+Clearing configuration on https://10.4.5.106:8765 using revision ID 445...
+Payload: {"router": null, "interface": {"swp1": null}, "qos": null, "vrf": {"default": {"router": {"bgp": null}}}}
+Configuration cleared successfully on https://10.4.5.106:8765.
+Applying configuration on https://10.4.5.106:8765 using revision ID 445...
+Payload: {"state": "apply", "auto-prompt": {"ays": "ays_yes"}}
+Configuration applied successfully on https://10.4.5.106:8765.
+Device cleanup completed.
+
+Applying configuration...
+Intent uploaded successfully. Intent ID: sample.yaml_20250410043721
+Configuration applied successfully. Intent ID: sample.yaml_20250410043721
+
+Checking configuration status...
+Debug info: url = http://10.4.5.167:8787/getDay1ConfigStatus ; params = {'intentName': sample.yaml_20250410043721}
+Initial configuration status response: [{'verification_logs': '', 'last_orchestrated': '2025-04-10T04:37:21.930+00:00', 'ip': '10.4.5.106', 'config_logs': '', 'verification_status': '0', 'config_status': '3', 'last_backup': 'Not Backed Up Yet'}, {'isorchestrationover': False}]
+Orchestration is not yet complete for all devices. Checking every 5 minutes...
+Debug info: url = http://10.4.5.167:8787/getDay1ConfigStatus ; params = {'intentName': sample.yaml_20250410043721}
+Configuration status response: [{'verification_logs': '', 'last_orchestrated': '2025-04-10T04:37:21.930+00:00', 'ip': '10.4.5.106', 'config_logs': 'Configuration Failed on the Device Leaf-1\n{\n  "state": "reloading",\n  "transition": {\n    "issue": {},\n    "progress": ""\n  }\n}\n\n\n------------------------------------------------------------------------------------------------\n', 'verification_status': '0', 'config_status': '0', 'last_backup': 'Not Backed Up Yet'}, {'isorchestrationover': True}]
+Orchestration is complete for all devices.
+Configuration status check completed.
+
+Comparing device configuration...
+[INFO] Loading configuration from /home/vivek/Orch_UT_auto/sample.yaml...
+[INFO] Starting network connectivity verification...
+[INFO] Connecting to Leaf-1
+[ERROR] Failed to connect to Leaf-1: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Leaf-1:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Ping results from Leaf-1:
+[RESULT]   To ALL: Connection failed: [Errno -3] Temporary failure in name resolution
+[INFO] Found 1 devices in category 'Spine'
+[INFO] Starting verification for device: Leaf-1 (10.4.5.106)
+Extracted interfaces to check: ['swp1']
+Checking QoS configuration...
+Starting QoS configuration check...
+Output of command 'nv show qos':
+ operational  applied         pending       
+-----------------------  -----------  --------------  --------------
+roce                                                                
+  enable                              on              on            
+  mode                   lossless     lossless        lossless      
+pfc-watchdog                                                        
+  polling-interval                    0:00:00.100000  0:00:00.100000
+  robustness                          3               3             
+[egress-queue-mapping]                default-global  default-global
+[pfc]                                 default-global  default-global
+[link-pause]                                                        
+[traffic-pool]                        default-lossy   default-lossy 
+[traffic-pool]                        roce-lossless   roce-lossless 
+[congestion-control]                  default-global  default-global
+[egress-scheduler]                    default-global  default-global
+[egress-shaper]                                                     
+[mapping]                             default-global  default-global
+[remark]                              default-global  default-global
+[advance-buffer-config]               default-global  default-global
+Output of command 'nv show qos pfc':
+ Profile         Cable Length  Port Buffer  Rx      Tx      XOff Th   XOn Th    Summary           
+--------------  ------------  -----------  ------  ------  --------  --------  ------------------
+default-global  100           344.73 KB    enable  enable  63.48 KB  63.48 KB  switch-priority: 3
+Output of command 'nv show qos pfc-watchdog':
+ operational     applied         pending       
+----------------  --------------  --------------  --------------
+polling-interval  0:00:00.100000  0:00:00.100000  0:00:00.100000
+robustness        3               3               3
+[INFO] QoS configuration matches expected values.
+[RESULT] QoS Check:PASS
+[INFO] Checking BGP ASN configuration...
+Output of command 'vtysh -c 'show ip bgp summary'':
+ % No BGP neighbors found in VRF default
+[ERROR] Could not find local AS number in BGP configuration output.
+[RESULT] BGP ASN Check: FAIL
+[INFO] Checking BGP neighbors...
+[INFO] No BGP neighbors found.
+[RESULT] BGP Neighbors Check: PASS
+[INFO] Checking BFD configuration...
+Output of command 'nv show vrf default router bgp peer-group overlay bfd':
+ operational  applied  pending
+-----------------  -----------  -------  -------
+enable                          on       on     
+detect-multiplier               3        3      
+min-rx-interval                 300      300    
+min-tx-interval                 300      300
+[INFO] BFD configuration matches expected values.
+[RESULT] BFD Check: PASS
+[INFO] Checking BGP path selection and graceful restart...
+Output of command 'nv show vrf default router bgp path-selection':
+ applied    pending  
+-----------------------  ---------  ---------
+routerid-compare         off        off      
+aspath                                       
+  compare-lengths        on         on       
+  compare-confed         off        off      
+med                                          
+  compare-always         off        off      
+  compare-deterministic  on         on       
+  compare-confed         off        off      
+  missing-as-max         off        off      
+multipath                                    
+  aspath-ignore          on         on       
+  generate-asset         off        off      
+  bandwidth              all-paths  all-paths
+[INFO] BGP path selection configuration matches expected values.
+[INFO] BGP graceful restart configuration matches expected values.
+[RESULT] BGP Path Selection and Graceful Restart Check: PASS
+[INFO] Checking BGP redistribution configuration for spine...
+Output of command 'nv show vrf default router bgp address-family ipv4-unicast redistribute':
+ applied    pending  
+-----------  ---------  ---------
+static                           
+  enable     on         on       
+  metric     auto       auto     
+  route-map  none       none     
+connected                        
+  enable     on         on       
+  metric     auto       auto     
+  route-map  lo-to-bgp  lo-to-bgp
+kernel                           
+  enable     off        off      
+ospf                             
+  enable     off        off
+[ERROR] BGP redistribution mismatch detected: static: Not found in output, connected: Not found in output
+[RESULT] BGP Redistribution Check: FAIL
+[INFO] Checking Adaptive Routing configuration...
+Output of command 'nv show interface swp1 router adaptive-routing':
+ applied  pending
+--------------------------  -------  -------
+enable                      on              
+link-utilization-threshold  70
+[INFO] MATCH: Adaptive Routing is enabled on swp1.
+[INFO] Adaptive Routing is correctly configured on interfaces: swp1
+[RESULT] Adaptive Routing Check: PASS
+[INFO] Checking loopback IP configuration...
+[INFO] Loopback IP 10.10.10.1 is within the expected pool 10.10.10.0/24.
+[RESULT] Loopback IP Check: PASS
+[INFO] Checking interface IPs...
+[INFO] MATCH: swp1 has IPs in subnet 40.0.0.0/24: 40.0.0.0
+[RESULT] Interface IPs Check: PASS
+Checking interface status...
+Parsing interface status output...
+[INFO] Interface status check completed successfully.
+[RESULT] Interface Status Check:
+PASS
+[INFO] Checking BGP peer groups...
+Output of command 'nv show vrf default router bgp peer-group':
+ RemoteAs - Remote Autonomous System, Afi-Safi - Address family
+                                                              
+Name            RemoteAs  Type      Afi-Safi  MemberCount
+--------------  --------  --------  --------  -----------
+overlay                   external                       
+underlay_leaf             external                       
+underlay_spine            external
+[INFO] All required BGP peer groups are present: underlay_spine, underlay_leaf
+[RESULT] BGP Peer Groups Check: PASS
+[INFO] Completed verification for device: Leaf-1 (10.4.5.106)
+
+[WARNING] No devices found in category 'Leaf'. Skipping...
+[WARNING] No devices found in category 'Tor'. Skipping...
+[WARNING] No hosts found in the configuration. Skipping host verification...
+
+Verification Summary:
++---------------+-----------------------------------------------+----------+
+| Device/Host   | Check                                         | Result   |
++===============+===============================================+==========+
+| Leaf-1        | QoS Check                                     | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BGP ASN Check                                 | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BGP Neighbors Check                           | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BFD Check                                     | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BGP Path Selection and Graceful Restart Check | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BGP Redistribution Check                      | FAIL     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | Adaptive Routing Check                        | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | Loopback IP Check                             | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | Interface IPs Check                           | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | Interface Status Check                        | PASS     |
++---------------+-----------------------------------------------+----------+
+| Leaf-1        | BGP Peer Groups Check                         | PASS     |
++---------------+-----------------------------------------------+----------+
+Device configuration comparison completed.
+
+All tasks completed successfully.
+root@FlowVision:/home/vivek/Orch_UT_auto/scripts# 
